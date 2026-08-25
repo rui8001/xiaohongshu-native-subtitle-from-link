@@ -1,0 +1,77 @@
+#!/bin/zsh
+set -euo pipefail
+
+task_simulate=0
+if [[ "${1:-}" == "--simulate" ]]; then
+  task_simulate=1
+  shift
+fi
+
+if (( $# < 1 || $# > 2 )); then
+  print -u2 "Usage: fetch_source [--simulate] VIDEO_URL [WORK_ROOT]"
+  exit 2
+fi
+
+task_url="$1"
+task_work_root="${2:-$PWD}"
+task_work_root="${task_work_root:A}"
+
+case "$task_url" in
+  http://*|https://*) ;;
+  *)
+    print -u2 "Only http or https video links are accepted"
+    exit 2
+    ;;
+esac
+
+if [[ -x "$task_work_root/.venv/bin/python" ]]; then
+  task_python="$task_work_root/.venv/bin/python"
+else
+  task_python="$(command -v python3 || true)"
+fi
+
+if [[ -z "$task_python" ]] || ! "$task_python" -c 'import yt_dlp, imageio_ffmpeg' >/dev/null 2>&1; then
+  print -u2 "Python environment lacks yt-dlp or imageio-ffmpeg"
+  exit 1
+fi
+
+if [[ -d "$task_work_root/素材" ]]; then
+  task_material_dir="$task_work_root/素材"
+else
+  task_material_dir="$task_work_root/materials"
+fi
+
+mkdir -p "$task_material_dir"
+task_ffmpeg="$("$task_python" -c 'import imageio_ffmpeg; print(imageio_ffmpeg.get_ffmpeg_exe())')"
+task_node="$(command -v node || true)"
+task_output_template="$task_material_dir/%(id)s_%(title).80B.%(ext)s"
+
+task_args=(
+  --no-playlist
+  --no-overwrites
+  --continue
+  --write-info-json
+  --write-subs
+  --write-auto-subs
+  --sub-langs 'zh.*,en.*'
+  --sub-format 'json3/best'
+  --ffmpeg-location "$task_ffmpeg"
+  --format 'bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4]/best'
+  --merge-output-format mp4
+  --output "$task_output_template"
+  --print 'Video ID: %(id)s'
+  --print 'Title: %(title)s'
+  --print 'Source account: %(channel,uploader)s'
+  --print 'Duration: %(duration)s'
+  --print 'Downloaded file: %(filepath)s'
+)
+
+if [[ -n "$task_node" ]]; then
+  task_args+=(--js-runtimes "node:$task_node")
+fi
+
+if (( task_simulate )); then
+  task_args+=(--simulate)
+fi
+
+"$task_python" -m yt_dlp "${task_args[@]}" -- "$task_url"

@@ -1,0 +1,25 @@
+{
+  "wireMagic": "pb3",
+  "events": [
+    {
+      "tStartMs": 2400,
+      "dDurationMs": 2200,
+      "segs": [{"utf8": "真正能改变结果的"}]
+    },
+    {
+      "tStartMs": 4800,
+      "dDurationMs": 2200,
+      "segs": [{"utf8": "不是把目标写得更大"}]
+    },
+    {
+      "tStartMs": 7200,
+      "dDurationMs": 2200,
+      "segs": [{"utf8": "而是把它拆成"}]
+    },
+    {
+      "tStartMs": 9600,
+      "dDurationMs": 2200,
+      "segs": [{"utf8": "今天就能完成的动作"}]
+    }
+  ]
+}

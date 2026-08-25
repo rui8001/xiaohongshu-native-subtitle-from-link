@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible problem in the Skill, scripts, or documentation
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Do not include cookies, credentials, private links, account data, or copyrighted media.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What did you ask the Skill to do, and what went wrong?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: safe-repro
+    attributes:
+      label: Safe reproduction
+      description: Provide synthetic media or format-only data.

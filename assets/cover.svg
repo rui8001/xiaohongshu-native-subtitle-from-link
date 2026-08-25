@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Xiaohongshu Native Subtitle From Link</title>
+  <desc id="desc">A rose cover showing a video link becoming native subtitle social images.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#3f0713"/><stop offset=".62" stop-color="#9f1239"/><stop offset="1" stop-color="#f97316"/></linearGradient>
+    <filter id="s"><feDropShadow dx="0" dy="16" stdDeviation="18" flood-opacity=".3"/></filter>
+  </defs>
+  <rect width="1200" height="630" rx="40" fill="url(#bg)"/>
+  <circle cx="1080" cy="100" r="200" fill="#fda4af" opacity=".13"/>
+  <circle cx="90" cy="640" r="250" fill="#fb923c" opacity=".12"/>
+  <g font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" fill="#fff">
+    <text x="72" y="108" font-size="25" font-weight="700" letter-spacing="4" fill="#fed7aa">CODEX SKILL · LINK TO IMAGES</text>
+    <text x="72" y="196" font-size="62" font-weight="800">公开视频链接 → 原生字幕长图</text>
+    <text x="74" y="252" font-size="25" fill="#ffe4e6">真实字幕帧 · 完整段落 · 3:4 长图 · JPG-only 发布包</text>
+  </g>
+  <g transform="translate(78 318)" filter="url(#s)">
+    <rect width="300" height="188" rx="30" fill="#fff"/>
+    <rect x="28" y="28" width="244" height="132" rx="18" fill="#18181b"/>
+    <path d="m126 66 64 28-64 28z" fill="#fb7185"/>
+    <rect x="52" y="133" width="196" height="8" rx="4" fill="#fff"/>
+    <rect x="88" y="148" width="124" height="5" rx="2.5" fill="#fda4af"/>
+    <path d="M402 94h68" stroke="#fed7aa" stroke-width="10" stroke-linecap="round"/>
+    <path d="m454 74 26 20-26 20" fill="none" stroke="#fed7aa" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <g transform="translate(512)">
+      <rect width="184" height="246" rx="24" fill="#fff"/>
+      <rect x="18" y="18" width="148" height="104" rx="14" fill="#fecdd3"/>
+      <circle cx="92" cy="69" r="31" fill="#e11d48"/>
+      <rect x="24" y="139" width="136" height="10" rx="5" fill="#3f0713"/>
+      <rect x="38" y="161" width="108" height="8" rx="4" fill="#9f1239"/>
+      <rect x="28" y="185" width="128" height="8" rx="4" fill="#3f0713"/>
+      <rect x="48" y="207" width="88" height="8" rx="4" fill="#9f1239"/>
+    </g>
+    <g transform="translate(726 18)">
+      <rect width="184" height="246" rx="24" fill="#fff" opacity=".92"/>
+      <rect x="18" y="18" width="148" height="104" rx="14" fill="#fed7aa"/>
+      <circle cx="92" cy="69" r="31" fill="#f97316"/>
+      <rect x="24" y="139" width="136" height="10" rx="5" fill="#3f0713"/>
+      <rect x="38" y="161" width="108" height="8" rx="4" fill="#9f1239"/>
+      <rect x="28" y="185" width="128" height="8" rx="4" fill="#3f0713"/>
+      <rect x="48" y="207" width="88" height="8" rx="4" fill="#9f1239"/>
+    </g>
+  </g>
+  <text x="72" y="574" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" font-size="22" font-weight="700" fill="#fed7aa">不重绘字幕 · 不自动发布 · 不包含真实生产素材</text>
+</svg>

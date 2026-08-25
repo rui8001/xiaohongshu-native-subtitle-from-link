@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Sensitive security report
+    url: https://github.com/rui8001/xiaohongshu-native-subtitle-from-link/security/advisories/new
+    about: Report credentials, private data, or sensitive source issues privately.

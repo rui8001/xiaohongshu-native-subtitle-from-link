@@ -1,0 +1,9 @@
+interface:
+  display_name: "小红书原生字幕图文"
+  short_description: "从公开视频链接生成原生字幕长图与 JPG 发布包"
+  icon_small: "./assets/icon.svg"
+  icon_large: "./assets/cover.svg"
+  brand_color: "#E11D48"
+  default_prompt: "Use $xiaohongshu-native-subtitle-from-link to turn this public subtitled video link into Xiaohongshu-ready native-subtitle images."
+policy:
+  allow_implicit_invocation: true

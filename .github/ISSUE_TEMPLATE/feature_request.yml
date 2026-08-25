@@ -1,0 +1,18 @@
+name: Feature request
+description: Suggest an improvement to the reusable native-subtitle workflow
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: gap
+    attributes:
+      label: Workflow gap
+      description: Which native-subtitle production problem should this solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed change
+    validations:
+      required: true

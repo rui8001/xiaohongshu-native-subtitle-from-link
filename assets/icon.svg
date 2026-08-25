@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256" role="img" aria-label="Native subtitle image icon">
+  <defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e11d48"/><stop offset="1" stop-color="#f97316"/></linearGradient></defs>
+  <rect width="256" height="256" rx="58" fill="url(#g)"/>
+  <rect x="57" y="30" width="142" height="196" rx="24" fill="#fff"/>
+  <rect x="75" y="50" width="106" height="75" rx="13" fill="#fecdd3"/>
+  <path d="m112 72 43 16-43 17z" fill="#e11d48"/>
+  <rect x="74" y="145" width="108" height="11" rx="5.5" fill="#3f0713"/>
+  <rect x="88" y="169" width="80" height="9" rx="4.5" fill="#9f1239"/>
+  <rect x="79" y="193" width="98" height="9" rx="4.5" fill="#3f0713"/>
+</svg>
