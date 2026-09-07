@@ -25,8 +25,21 @@ def format_time(milliseconds: int) -> str:
 
 
 def event_text(event: dict) -> str:
-    text = "".join(segment.get("utf8", "") for segment in event.get("segs", []))
+    segments = event.get("segs", [])
+    if not isinstance(segments, list):
+        raise ValueError("segs must be an array")
+    for segment in segments:
+        if not isinstance(segment, dict) or not isinstance(segment.get("utf8", ""), str):
+            raise ValueError("each segment must be an object with string utf8 text")
+    text = "".join(segment.get("utf8", "") for segment in segments)
     return " ".join(text.replace("\n", " ").split())
+
+
+def milliseconds(event: dict, field: str) -> int:
+    value = event.get(field)
+    if type(value) is not int or value < 0:
+        raise ValueError(f"{field} must be a nonnegative integer")
+    return value
 
 
 def parse_args() -> argparse.Namespace:
@@ -43,18 +56,30 @@ def main() -> int:
     if args.output.exists():
         raise SystemExit(f"Output already exists: {args.output}")
 
-    with args.input.open("r", encoding="utf-8") as handle:
-        payload = json.load(handle)
+    try:
+        with args.input.open("r", encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, UnicodeError, ValueError):
+        raise SystemExit("Cannot read subtitle input as UTF-8 JSON") from None
+    if not isinstance(payload, dict) or not isinstance(payload.get("events"), list):
+        raise SystemExit("Subtitle input must be an object with an events array")
 
     lines = [f"# Subtitle timeline: {args.input.name}", ""]
     previous_text = ""
     cue_count = 0
-    for event in payload.get("events", []):
-        text = event_text(event)
-        if not text or text == previous_text or NON_SPEECH.match(text):
+    for index, event in enumerate(payload["events"]):
+        try:
+            if not isinstance(event, dict):
+                raise ValueError("event must be an object")
+            text = event_text(event)
+            if not text:
+                continue  # JSON3 window/style events have no caption text.
+            start = milliseconds(event, "tStartMs")
+            end = start + milliseconds(event, "dDurationMs")
+        except ValueError as exc:
+            raise SystemExit(f"Invalid subtitle event {index + 1}: {exc}") from None
+        if text == previous_text or NON_SPEECH.match(text):
             continue
-        start = int(event.get("tStartMs", 0))
-        end = start + int(event.get("dDurationMs", 0))
         lines.append(f"- `{format_time(start)}–{format_time(end)}` {text}")
         previous_text = text
         cue_count += 1

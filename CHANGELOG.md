@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Validate JSON3 containers, caption segments and integer timestamps before writing a timeline; malformed captions fail clearly without publishing a partial timeline or echoing caption text.
+- Add nine synthetic JSON3 regression tests covering invalid shapes, missing/negative/non-finite/boolean times, duplicates, metadata events and valid formatting.
 - Stage and validate JPEGs and ZIP before publication; clean up owned outputs on ordinary write failures without overwriting existing files.
 - Reject symlink/non-JPEG inputs and overlapping output paths; include images numbered 100 and above in numeric order.
 - Add ten focused packager regressions, including retry after failure and a concurrently created ZIP.
