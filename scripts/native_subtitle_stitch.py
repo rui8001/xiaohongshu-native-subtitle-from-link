@@ -3,6 +3,7 @@
 
 import argparse
 import json
+import math
 import os
 import re
 import shutil
@@ -56,7 +57,7 @@ def parse_aspect(value):
         width, height = (float(x) for x in value.split(":"))
     except Exception as exc:
         raise argparse.ArgumentTypeError("比例必须写成 3:4 这样的格式") from exc
-    if width <= 0 or height <= 0:
+    if not all(math.isfinite(x) and x > 0 for x in (width, height)):
         raise argparse.ArgumentTypeError("比例必须为正数")
     return width, height
 
@@ -160,6 +161,8 @@ def contact_sheet(paths, out_path, columns=4):
 
 
 def command_band(args):
+    if Path(args.out).exists():
+        raise SystemExit("预览输出已存在；请指定新的 --out 路径")
     frame = grab_frame(args.video, args.time)
     _, x0, y0, x1, y1 = crop_band(
         frame, args.band_top, args.band_bottom,
@@ -180,29 +183,47 @@ def command_render(args):
     manifest_path = Path(args.manifest).resolve()
     with manifest_path.open(encoding="utf-8") as handle:
         data = json.load(handle)
-    items = data.get("images")
+    items = data.get("images") if isinstance(data, dict) else None
     if not isinstance(items, list) or not items:
         raise SystemExit("manifest 必须包含非空 images 数组")
 
-    out_dir = Path(args.out_dir).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
-    outputs = []
+    out_dir = Path(args.out_dir).absolute()
+    if out_dir.exists() or out_dir.is_symlink():
+        raise SystemExit("输出目录已存在；请指定新的 --out-dir，避免覆盖成品")
+    prepared = []
     for index, item in enumerate(items, 1):
+        if not isinstance(item, dict):
+            raise SystemExit(f"第 {index} 项必须是对象")
         title = safe_title(item.get("title", f"图片{index}"))
         times = item.get("times")
-        if not isinstance(times, list):
-            raise SystemExit(f"第 {index} 项缺少 times 数组")
-        out_path = out_dir / f"{index:02d}_{title}.jpg"
-        render_one(
-            args.video, times, out_path, args.aspect, args.width,
-            args.band_top, args.band_bottom,
-            args.crop_left, args.crop_right,
-            args.hero_fraction, args.strip_height,
-        )
-        outputs.append(out_path)
+        if not isinstance(times, list) or len(times) < 2:
+            raise SystemExit(f"第 {index} 项至少需要 2 个时间点")
+        if any(isinstance(t, bool) or not isinstance(t, (int, float)) or
+               not math.isfinite(t) or t < 0 for t in times):
+            raise SystemExit(f"第 {index} 项时间点必须是有限非负数字")
+        if any(b <= a for a, b in zip(times, times[1:])):
+            raise SystemExit(f"第 {index} 项时间点必须严格递增")
+        prepared.append((f"{index:02d}_{title}.jpg", times))
 
-    shutil.copyfile(manifest_path, out_dir / "native-subtitle-times.json")
-    contact_sheet(outputs, out_dir / "final_contact_sheet.jpg")
+    out_dir.parent.mkdir(parents=True, exist_ok=True)
+    # Publish only a fully rendered batch. A failed decode leaves no partial output.
+    with tempfile.TemporaryDirectory(prefix=".subtitle-render-", dir=out_dir.parent) as temporary:
+        staging = Path(temporary) / "batch"
+        staging.mkdir()
+        outputs = []
+        for filename, times in prepared:
+            out_path = staging / filename
+            render_one(
+                args.video, times, out_path, args.aspect, args.width,
+                args.band_top, args.band_bottom, args.crop_left, args.crop_right,
+                args.hero_fraction, args.strip_height,
+            )
+            outputs.append(out_path)
+        shutil.copyfile(manifest_path, staging / "native-subtitle-times.json")
+        contact_sheet(outputs, staging / "final_contact_sheet.jpg")
+        if out_dir.exists() or out_dir.is_symlink():
+            raise SystemExit("输出目录在渲染期间出现；拒绝覆盖")
+        staging.rename(out_dir)
     print(f"总览图: {out_dir / 'final_contact_sheet.jpg'}")
 
 
