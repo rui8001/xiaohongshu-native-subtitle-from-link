@@ -90,6 +90,8 @@ outputs/2026-08-25-topic/
 
 完整命令和参数见 [工作流文档](./references/workflow.md)。公开的 [manifest 示例](./examples/native-subtitle/manifest.json) 与 [JSON3 示例](./examples/native-subtitle/sample.json3) 可用于理解格式。
 
+每次渲染请指定新的输出目录。工具会拒绝覆盖已有目录，并在整批图片成功后才生成最终输出；时间点无效或解码失败不会留下半套成品。
+
 ## 质量标准
 
 - 每张图都能独立表达一个完整观点，不拼接互不相关的话。

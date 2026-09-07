@@ -1,0 +1,24 @@
+name: Repository quality
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt -r requirements-dev.txt
+      - run: sudo apt-get update && sudo apt-get install -y zsh
+      - run: zsh -n scripts/fetch_source
+      - run: python scripts/validate_repository.py
+      - run: python -m unittest discover -s tests -v
