@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Stage and validate JPEGs and ZIP before publication; clean up owned outputs on ordinary write failures without overwriting existing files.
+- Reject symlink/non-JPEG inputs and overlapping output paths; include images numbered 100 and above in numeric order.
+- Add ten focused packager regressions, including retry after failure and a concurrently created ZIP.
 - Refuse existing render/preview outputs and validate every manifest item before rendering.
 - Publish only complete rendered batches; failed decodes no longer leave partial output.
 - Reject non-finite, negative, boolean and nonnumeric timestamps.
