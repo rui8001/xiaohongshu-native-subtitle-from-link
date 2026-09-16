@@ -1,13 +1,13 @@
 ---
 name: xiaohongshu-native-subtitle-from-link
-description: Download a user-provided public video link, identify complete growth, learning, motivation, or reflection passages, and produce separate Xiaohongshu-ready native-subtitle images plus a JPG-only ZIP. Use when the user supplies a link or asks for this established link-to-images workflow; do not use when the video lacks burned-in Chinese subtitles.
+description: Produce separate native-subtitle images and a JPG-only ZIP from a public video with burned-in Chinese subtitles. Use when the user requests this link-to-images workflow, or supplies a link within an established native-subtitle project; a bare URL outside that context does not trigger it.
 ---
 
 # Xiaohongshu Native Subtitle From Link
 
-Resolve `<SKILL_DIR>` as this Skill's directory. Read [references/workflow.md](references/workflow.md) before processing a link.
+Resolve `<SKILL_DIR>` as this Skill's directory. For a new source, read [references/workflow.md](references/workflow.md). For an existing image revision, read the original manifest and only the relevant frame selection, crop, render, QC, and packaging sections; preserve accepted source choices and text.
 
-The user's link places that source in the task scope but does not prove publication rights. Record the source and prepare a draft package only; do not log in or publish.
+Within this native-subtitle task, the user's link places that source in the task scope but does not prove publication rights. Record the source and prepare a draft package only; do not log in or publish.
 
 Use `<WORK_ROOT>` as the user's specified project or the current workspace. If it already contains `素材/` and `输出/`, preserve that layout. Otherwise use `materials/` and `outputs/`.
 
